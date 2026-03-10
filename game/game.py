@@ -172,7 +172,7 @@ class Game:
         pg.init()
 
         #Creates window icon
-        icon = pg.image.load('hockey_icon.png')
+        icon = pg.image.load('assets/hockey_icon.png')
 
         #Sets up window
         self.screen = pg.display.set_caption("Air Hockey")
@@ -294,3 +294,4 @@ class Game:
             self.clock.tick(60)
             
         pg.quit()
+
