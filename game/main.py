@@ -1,4 +1,5 @@
 from game import Game
 
-match = Game()
-match.start()
+class Main:
+    match = Game()
+    match.start()
