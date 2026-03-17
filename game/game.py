@@ -160,8 +160,8 @@ class Game:
         player_text = font.render(str(player_score), True, (0, 0, 0))
         opponent_text = font.render(str(opponent_score), True, (0, 0, 0))
         
-        self.screen.blit(player_text, (15, 410))
-        self.screen.blit(opponent_text, (15, 360))
+        self.screen.blit(player_text, (15, self.HEIGHT/2 - 40))
+        self.screen.blit(opponent_text, (15, (self.HEIGHT/2 + 10)))
 
     def game_over(self):
         return self.player.score == 7 or self.opponent.score == 7
@@ -194,7 +194,7 @@ class Game:
         
         #Initializes opponent
         self.opponent.set_pos(self.WIDTH/2, 70)
-        self.opponent.vel = 3
+        self.opponent.vel = 2
         
         while running:
             for event in pg.event.get():
@@ -211,16 +211,16 @@ class Game:
                 
                 #Puck velocity constantly decelerates
                 if (self.puck.x_vel > 0):
-                    self.puck.x_vel -= (1/32)
+                    self.puck.x_vel = self.puck.x_vel - (1/32)
 
                 else:
-                    self.puck.x_vel += (1/32)
+                    self.puck.x_vel = self.puck.x_vel + (1/32)
 
                 if (self.puck.y_vel > 0):
-                    self.puck.y_vel -= (1/32)
+                    self.puck.y_vel = self.puck.y_vel - (1/32)
 
                 else:
-                    self.puck.y_vel += (1/32)
+                    self.puck.y_vel = self.puck.y_vel + (1/32)
 
                 if(self.puck.x_vel == (1/32)):
                     self.puck.x_vel = 0
@@ -232,27 +232,27 @@ class Game:
                 if(self.puck.y < (self.HEIGHT/2 - 10)):
 
                     if(self.opponent.x > self.puck.x):
-                        self.opponent.x -= self.opponent.vel*2
+                        self.opponent.x = self.opponent.x - self.opponent.vel*2
 
                     elif(self.opponent.x < self.puck.x):
-                        self.opponent.x += self.opponent.vel*2
+                        self.opponent.x = self.opponent.x + self.opponent.vel*2
 
                     #Hit puck
                     if(self.puck.y > self.opponent.y):
-                        self.opponent.y += self.opponent.vel
+                        self.opponent.y = self.opponent.y + self.opponent.vel
 
                 else:
 
                     #Return to goal
                     if(self.opponent.y > 50):
-                        self.opponent.y -= self.opponent.vel*2
+                        self.opponent.y = self.opponent.y - self.opponent.vel*2
                         
                     #Center opponent
                     if(self.opponent.x > self.WIDTH/2):
-                        self.opponent.x -= self.opponent.vel*2
+                        self.opponent.x = self.opponent.x - self.opponent.vel*2
                         
                     else:
-                        self.opponent.x += self.opponent.vel*2
+                        self.opponent.x = self.opponent.x + self.opponent.vel*2
                 
                 #Puck 
                 if (self.puck.in_rink(self.WIDTH, self.HEIGHT)):
@@ -294,6 +294,3 @@ class Game:
             self.clock.tick(60)
             
         pg.quit()
-
-match = Game()
-match.start()
