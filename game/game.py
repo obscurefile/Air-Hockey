@@ -153,32 +153,24 @@ class Game:
         return self.player.score == 7 or self.opponent.score == 7
 
     def start(self):
-        
-        #Initializes pygame
         pg.init()
 
-        #Creates window icon
         icon = pg.image.load('assets/hockey_icon.png')
 
-        #Sets up window
         self.screen = pg.display.set_caption("Air Hockey")
         self.screen = pg.display.set_icon(icon)
         self.screen = pg.display.set_mode((self.WIDTH, self.HEIGHT))
         
         self.clock = pg.time.Clock()
 
-        #Score font
         font = pg.font.SysFont(None, 50)
-
-        #Starts thread
+        
         running = True
 
         pg.mouse.set_visible(False)
 
-        #Sets the position of the puck
         self.puck.set_pos(self.WIDTH/2, (self.HEIGHT - (self.HEIGHT/7)))
         
-        #Initializes opponent
         self.opponent.set_pos(self.WIDTH/2, 70)
         self.opponent.vel = 2.5
         
@@ -195,7 +187,6 @@ class Game:
                 self.player.draw_striker(self.screen, False, "red", self.HEIGHT/2, self.HEIGHT)
                 self.opponent.draw_striker(self.screen, True, "blue", 0, self.HEIGHT/2)
                 
-                #Puck velocity constantly decelerates
                 if (self.puck.x_vel > 0):
                     self.puck.x_vel -= (1/32)
 
@@ -214,7 +205,6 @@ class Game:
                 if(self.puck.y_vel == (1/32)):
                     self.puck.y_vel = 0
   
-                #Opponent movement
                 if(self.puck.y < (self.HEIGHT/2 - 10)):
 
                     if(self.opponent.x > self.puck.x):
@@ -222,37 +212,30 @@ class Game:
 
                     elif(self.opponent.x < self.puck.x):
                         self.opponent.x += self.opponent.vel*2
-
-                    #Hit puck
+                        
                     if(self.puck.y > self.opponent.y):
                         self.opponent.y += self.opponent.vel
 
                 else:
-
-                    #Return to goal
                     if(self.opponent.y > 50):
                         self.opponent.y -= self.opponent.vel*2
                         
-                    #Center opponent
                     if(self.opponent.x > self.WIDTH/2):
                         self.opponent.x -= self.opponent.vel*2
                         
                     else:
                         self.opponent.x += self.opponent.vel*2
                 
-                #Puck 
                 if (self.puck.in_rink(self.WIDTH, self.HEIGHT)):
                     self.puck.draw_puck(self.screen)
                     
                     self.surface_hit()
 
                     self.puck_hit(self.puck)
-
-                    #Puck hits surface
+                    
                     if(self.last_surface is not None):
                         self.move_puck(self.puck, self.last_surface)
 
-                    #Player or opponent scores 
                     if (self.puck.x > 230 and self.puck.x < 360):
                         if(self.hitbox_collision(self.top_wall, self.puck.get_hitbox())):
                             self.goal(self.player)
@@ -264,19 +247,16 @@ class Game:
                             self.puck.set_pos(self.WIDTH/2, 125)
                             self.puck.x_vel, self.puck.y_vel = 0, 0
                 else:
+                    #In case the puck goes out of bounds
                     self.puck.set_pos(self.WIDTH/2, self.HEIGHT/2)
                     self.puck.x_vel, self.puck.y_vel = 0, 0
                     
             else:
-                
-                #Game ends
                 self.player.draw_striker(self.screen, True, "red", self.HEIGHT/2, self.HEIGHT)
                 self.opponent.draw_striker(self.screen, True, "blue", 0, self.HEIGHT/2)
-                    
-            #Updates screen
-            pg.display.flip()
             
-            #Sets FPS
+            pg.display.flip()
+
             self.clock.tick(60)
             
         pg.quit()
