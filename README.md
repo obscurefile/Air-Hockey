@@ -5,4 +5,4 @@ A simple air hockey game
 
 Use your mouse to play
 
-Requires pygame+
+Requires pygame
